@@ -12,18 +12,26 @@ target_compile_definitions(
   ${PROJECT_FILES} INTERFACE USE_HAL_DRIVER STM32F103xB
                                   $<$<CONFIG:Debug>:DEBUG>)
 
+#################################################################################
+# files below
+################################################################################
+
+set(YOUR_PATH "../Core/App")
+file(GLOB SRC "../Core/App/*.c" )
+
+
 target_include_directories(
   ${PROJECT_FILES}
   INTERFACE ../Core/Inc
             ../Drivers/STM32F1xx_HAL_Driver/Inc
             ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
             ../Drivers/CMSIS/Device/ST/STM32F1xx/Include
-            ../Drivers/CMSIS/Include)
+            ../Drivers/CMSIS/Include
+            ${YOUR_PATH})
 
 target_sources(
   ${PROJECT_FILES}
   INTERFACE ../Core/Src/main.c
-            ../Core/Src/gpio.c
             ../Core/Src/stm32f1xx_it.c
             ../Core/Src/stm32f1xx_hal_msp.c
             ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c
@@ -43,6 +51,7 @@ target_sources(
             ../Core/Src/sysmem.c
             ../Core/Src/syscalls.c
             ${START_FILE_ABSOLUTE}
+            ${SRC}
             )
 
 # for link library
