@@ -16,8 +16,19 @@ target_compile_definitions(
 # files below
 ################################################################################
 
-set(YOUR_PATH "../Core/App")
-file(GLOB SRC "../Core/App/*.c" )
+file(GLOB_RECURSE HEADERS "../Core/App/*.h")
+set(APP_INCLUDE_PATH "")
+foreach(head ${HEADERS})
+  get_filename_component(dir ${head} DIRECTORY)
+  list(APPEND APP_INCLUDE_PATH ${dir})
+
+endforeach(head ${HEADERS})
+
+
+list(REMOVE_DUPLICATES  APP_INCLUDE_PATH)
+message(STATUS "App Include Path: ${APP_INCLUDE_PATH}")
+
+file(GLOB_RECURSE SRC "../Core/App/*.c")
 
 
 target_include_directories(
@@ -27,13 +38,16 @@ target_include_directories(
             ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
             ../Drivers/CMSIS/Device/ST/STM32F1xx/Include
             ../Drivers/CMSIS/Include
-            ${YOUR_PATH})
+            ${APP_INCLUDE_PATH})
 
 target_sources(
   ${PROJECT_FILES}
   INTERFACE ../Core/Src/main.c
             ../Core/Src/stm32f1xx_it.c
             ../Core/Src/stm32f1xx_hal_msp.c
+            ../Core/Src/system_stm32f1xx.c
+            ../Core/Src/sysmem.c
+            ../Core/Src/syscalls.c
             ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c
             ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c
             ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c
@@ -47,9 +61,6 @@ target_sources(
             ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c
             ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c
             ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c
-            ../Core/Src/system_stm32f1xx.c
-            ../Core/Src/sysmem.c
-            ../Core/Src/syscalls.c
             ${START_FILE_ABSOLUTE}
             ${SRC}
             )

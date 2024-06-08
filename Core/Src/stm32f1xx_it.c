@@ -21,6 +21,9 @@
 #include "main.h"
 #include "stm32f1xx_it.h"
 #include "GPIO.h"
+#include "stm32f1xx.h"
+#include "stm32f1xx_hal_uart.h"
+#include "stm32f1xx_hal_usart.h"
 
 /******************************************************************************/
 /*           Cortex-M3 Processor Interruption and Exception Handlers          */
@@ -159,18 +162,30 @@ void SysTick_Handler(void)
 /* please refer to the startup file (startup_stm32f1xx.s).                    */
 /******************************************************************************/
 
-/****************************************************************************/
-/**
-  For external interrupt
+// #################################
+//  For External interrupt
+//  void EXIT_IRQHandler(void)
+//  {
+//      if (__HAL_GPIO_EXTI_GET_IT(EXIT_GPIO_PIN) != RESET) {
 
-void EXIT_IRQHandler(void)
+//         HAL_GPIO_TogglePin(LED1_PORT, LED1_PIN);
+
+//         __HAL_GPIO_EXTI_CLEAR_IT(EXIT_GPIO_PIN);
+//     }
+// }
+
+// ###############################3
+//  For USART1 IRQHandler
+
+extern UART_HandleTypeDef UARTHandle;
+void USART1_IRQHandler(void)
 {
-    if (__HAL_GPIO_EXTI_GET_IT(EXIT_GPIO_PIN) != RESET) {
 
-        HAL_GPIO_TogglePin(LED1_PORT, LED1_PIN);
+    uint8_t ch = 0;
+    if(__HAL_USART_GET_FLAG(&UARTHandle, UART_IT_RXNE) != RESET){
 
-        __HAL_GPIO_EXTI_CLEAR_IT(EXIT_GPIO_PIN);
+            ch = (uint16_t)READ_REG(UARTHandle.Instance->DR);
+            WRITE_REG(UARTHandle.Instance->DR, ch);
+
     }
 }
-
-*/

@@ -1,9 +1,3 @@
-#ifndef __RCCANDGPIO_OUT_H__
-#define __RCCANDGPIO_OUT_H__ 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "GPIO.h"
 
 
@@ -28,7 +22,7 @@ void DelayN(__IO uint32_t n)
  * @brief set HSI or HSE as RCC source
  *
  */
-void Prac_1(void)
+void Prac_clockSource(void)
 {
     HAL_Init();
 
@@ -66,7 +60,7 @@ void clockHSI(void)
     RCC_ClkInit.APB2CLKDivider = RCC_SYSCLK_DIV1;
 
     if (HAL_RCC_ClockConfig(&RCC_ClkInit, FLASH_LATENCY_2) != HAL_OK)
-        while (1);
+        while (1);  // Error handling
 }
 
 void clockHSE(void)
@@ -95,14 +89,5 @@ void clockHSE(void)
     RCC_ClkInit.APB2CLKDivider = RCC_SYSCLK_DIV1;
 
     if (HAL_RCC_ClockConfig(&RCC_ClkInit, FLASH_LATENCY_2) != HAL_OK)
-        while (1);
+        while (1);  // Error handling
 }
-
-
-
-
-
-#ifdef __cplusplus
-}
-#endif
-#endif

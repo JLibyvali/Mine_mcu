@@ -25,6 +25,10 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+//###################################################################################
+// For led GPIOC13
+//###################################################################################
+
 #define LED1_PORT      GPIOC
 #define LED1_PIN       GPIO_PIN_13
 
@@ -32,7 +36,6 @@ void LED_GPIO_Init(void); // led display
 
 //###################################################################################
 // For external interrupt , REMEMBER: write the handler in xxxxxx_it_.c
-// Implement function in ExternalIT.c
 //###################################################################################
 #define SEND_DATA_PORT GPIOB
 #define SEND_DATA_PIN  GPIO_PIN_4
@@ -42,6 +45,21 @@ void LED_GPIO_Init(void); // led display
 #define EXIT_IRQn      EXTI3_IRQn
 #define EXIT_IRQHandler EXTI3_IRQHandler
 void EXIT_GPIO_Init(void); // external interrupt
+
+
+//###################################################################################
+// For USART1
+//###################################################################################
+#define USART1_TX_PORT GPIOA
+#define USART1_TX_PIN GPIO_PIN_9
+#define USART1_RX_PORT GPIOA
+#define USART1_RX_PIN GPIO_PIN_10
+
+
+
+
+
+
 
 
 

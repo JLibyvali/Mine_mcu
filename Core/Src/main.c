@@ -18,25 +18,26 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "GPIO.h"
+#include "USART.h"
 
 void SystemClock_Config(void);
 
-void SystickInit(void);
- void Delay_us(__IO uint32_t n);
 int main(void)
 {
 
     HAL_Init();
     SystemClock_Config();
 
-    SystickInit();
+
+    USART1_Init();
+    printf("Welcome to STM32f1xxxxxx\n");
+    USART_String((uint8_t*)("Hell, World\n"));
+
 
     while (1) {
-
-        HAL_GPIO_TogglePin(LED1_PORT, LED1_PIN);
-        Delay_us(100000);
+    
     }
+
 }
 
 /**
