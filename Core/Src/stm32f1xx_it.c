@@ -21,7 +21,9 @@
 #include "main.h"
 #include "stm32f1xx_it.h"
 #include "GPIO.h"
+#include "USART.h"
 #include "stm32f1xx.h"
+#include "stm32f1xx_hal_gpio.h"
 #include "stm32f1xx_hal_uart.h"
 #include "stm32f1xx_hal_usart.h"
 
@@ -164,28 +166,6 @@ void SysTick_Handler(void)
 
 // #################################
 //  For External interrupt
-//  void EXIT_IRQHandler(void)
-//  {
-//      if (__HAL_GPIO_EXTI_GET_IT(EXIT_GPIO_PIN) != RESET) {
 
-//         HAL_GPIO_TogglePin(LED1_PORT, LED1_PIN);
-
-//         __HAL_GPIO_EXTI_CLEAR_IT(EXIT_GPIO_PIN);
-//     }
-// }
-
-// ###############################3
+// ###############################
 //  For USART1 IRQHandler
-
-extern UART_HandleTypeDef UARTHandle;
-void USART1_IRQHandler(void)
-{
-
-    uint8_t ch = 0;
-    if(__HAL_USART_GET_FLAG(&UARTHandle, UART_IT_RXNE) != RESET){
-
-            ch = (uint16_t)READ_REG(UARTHandle.Instance->DR);
-            WRITE_REG(UARTHandle.Instance->DR, ch);
-
-    }
-}

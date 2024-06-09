@@ -63,12 +63,8 @@ target_link_directories(
 
 # Add linked libraries
 target_link_libraries(
-  ${CMAKE_PROJECT_NAME} ${PROJECT_FILES} # Add user defined libraries
+  ${CMAKE_PROJECT_NAME} PRIVATE  ${PROJECT_FILES} # Add user defined libraries
 )
-
-# ##############################################################################
-# For log
-# ##############################################################################
 
 # ##############################################################################
 # For customer target

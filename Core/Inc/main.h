@@ -33,6 +33,8 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <stdint.h>
+#include "GPIO.h"
+#include "USART.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

@@ -18,7 +18,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "USART.h"
+#include "DMA.h"
 
 void SystemClock_Config(void);
 
@@ -27,16 +27,10 @@ int main(void)
 
     HAL_Init();
     SystemClock_Config();
+    LED_GPIO_Init();
 
-
-    USART1_Init();
-    printf("Welcome to STM32f1xxxxxx\n");
-    USART_String((uint8_t*)("Hell, World\n"));
-
-
-    while (1) {
     
-    }
+    Prac_DMA();
 
 }
 
