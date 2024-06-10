@@ -63,7 +63,7 @@ target_link_directories(
 
 # Add linked libraries
 target_link_libraries(
-  ${CMAKE_PROJECT_NAME} PRIVATE  ${PROJECT_FILES} # Add user defined libraries
+  ${CMAKE_PROJECT_NAME} PRIVATE ${PROJECT_FILES} # Add user defined libraries
 )
 
 # ##############################################################################
@@ -112,22 +112,11 @@ elseif(NOT ST_FLASH)
   message(WARNING "`st-flash` not found, flash will not be availabe!")
 endif()
 
-if(ST_UTIL)
 
-  add_custom_command(
-    OUTPUT st-util-started
-    COMMAND 2>&1 &
-    COMMAND sleep 2 # wait for st-util start
-    COMMAND touch st-util-started
-    COMMENT "Starting st-util")
+add_custom_command(
+  USES_TERMINAL
+  OUTPUT info-cmd
+  COMMAND ${ST_INFO} --probe
+  COMMENT "Printed All chip info")
 
-  add_custom_command(
-    OUTPUT gdb-started
-    COMMAND ${TOOLCHAIN_DIR}/bin/${TOOLCHAIN_PREFIX}gdb
-            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.elf
-    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.elf
-            st-util-started)
-
-  add_custom_target(gdb DEPENDS gdb-started)
-
-endif()
+add_custom_target(info DEPENDS info-cmd)

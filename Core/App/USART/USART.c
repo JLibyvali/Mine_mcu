@@ -1,9 +1,12 @@
 #include "USART.h"
 #include "GPIO.h"
+#include "stm32f1xx_hal_gpio.h"
+#include "stm32f1xx_hal_rcc.h"
 #include "stm32f1xx_hal_uart.h"
 #include <stdint.h>
 
 UART_HandleTypeDef UARTHandle;
+GPIO_InitTypeDef  GPIOInit;
 char Buffer[BUFSIZE];
 uint16_t Rxlen;
 uint8_t Rxflag;
@@ -20,6 +23,7 @@ void USART1_Init(void)
     UARTHandle.Init.StopBits   = UART_STOPBITS_1;
     UARTHandle.Init.WordLength = UART_WORDLENGTH_8B;
 
+    // HAL_UART_Init() will call the HAL_UART_MspInit()
     if (HAL_UART_Init(&UARTHandle) != HAL_OK) {
         printf("USART1 Init fail\n");
     }
@@ -30,10 +34,9 @@ void USART1_Init(void)
 }
 
 // MspInit() all are _weak_define, So if you  define yours,
+// MspInit() initialize the basic GPIO
 void HAL_UART_MspInit(UART_HandleTypeDef *huart)
 {
-
-    GPIO_InitTypeDef GPIOInit;
 
     // GPIOA9 ----> USART1_TX
     // GPIOA10 ---> USART1_RX
@@ -54,6 +57,38 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
 
     // HAL_NVIC_SetPriority(USART1_IRQn, 0, 1);
     // HAL_NVIC_EnableIRQ(USART1_IRQn);
+}
+
+void USART1_Init_DMA(void){
+
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    __HAL_RCC_USART1_CLK_ENABLE();
+    
+    
+    // GPIOA9 ----> USART1_TX
+    // GPIOA10 ---> USART1_RX
+    GPIOInit.Mode = GPIO_MODE_AF_PP;
+    GPIOInit.Pin = GPIO_PIN_9;
+    GPIOInit.Pull = GPIO_PULLUP;
+    GPIOInit.Speed = GPIO_SPEED_FREQ_HIGH;
+
+    HAL_GPIO_Init(USART1_TX_PORT, &GPIOInit);
+
+    GPIOInit.Mode  = GPIO_MODE_AF_INPUT;
+    GPIOInit.Pin = GPIO_PIN_10;
+    HAL_GPIO_Init(USART1_RX_PORT, &GPIOInit); 
+
+
+    UARTHandle.Instance = USART1;
+    UARTHandle.Init.BaudRate = BAUDRATE;
+    UARTHandle.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+    UARTHandle.Init.Mode = UART_MODE_TX_RX;
+    UARTHandle.Init.Parity = UART_PARITY_NONE;
+    UARTHandle.Init.StopBits = UART_STOPBITS_1;
+    UARTHandle.Init.WordLength  = UART_WORDLENGTH_8B;
+
+    HAL_UART_Init(&UARTHandle);
+
 }
 
 // re-directed of stdio

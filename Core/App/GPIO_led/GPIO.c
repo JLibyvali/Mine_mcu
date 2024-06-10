@@ -7,8 +7,6 @@ void LED_GPIO_Init(void)
     GPIO_InitTypeDef LED_Init;
 
     /* GPIO Ports Clock Enable */
-    __HAL_RCC_GPIOD_CLK_ENABLE();
-    __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOC_CLK_ENABLE();
 
     LED_Init.Pin   = LED1_PIN;

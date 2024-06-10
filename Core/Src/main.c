@@ -18,7 +18,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "DMA.h"
 
 void SystemClock_Config(void);
 
@@ -29,9 +28,6 @@ int main(void)
     SystemClock_Config();
     LED_GPIO_Init();
 
-    
-    Prac_DMA();
-
 }
 
 /**
@@ -40,8 +36,8 @@ int main(void)
  */
 void SystemClock_Config(void)
 {
-    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+    RCC_OscInitTypeDef RCC_OscInitStruct;
+    RCC_ClkInitTypeDef RCC_ClkInitStruct;
 
     /** Initializes the RCC Oscillators according to the specified parameters
      * in the RCC_OscInitTypeDef structure.

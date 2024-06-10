@@ -3,13 +3,15 @@ cmake_minimum_required(VERSION 3.22)
 project(${PROJECT_FILES})
 add_library(${PROJECT_FILES} INTERFACE)
 
-set(START_FILE "${CMAKE_CURRENT_LIST_DIR}/startup_stm32f103xb.s")
+set(START_FILE "${CMAKE_CURRENT_LIST_DIR}/startup_stm32f103xe.s")
 get_filename_component(START_FILE_ABSOLUTE ${START_FILE} ABSOLUTE)
 
 enable_language(C ASM)
 
+# For the specific stm32 target
+# macro all in "stm32f1xxx.h"
 target_compile_definitions(
-  ${PROJECT_FILES} INTERFACE USE_HAL_DRIVER STM32F103xB
+  ${PROJECT_FILES} INTERFACE USE_HAL_DRIVER STM32F103xE
                              $<$<CONFIG:Debug>:DEBUG>)
 
 # ##############################################################################
@@ -18,7 +20,10 @@ target_compile_definitions(
 
 file(GLOB_RECURSE USER_SRCS "../Core/App/*.c")
 set(USER_DRIVER 
-            "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c")
+            "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c"
+            "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c"
+            "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c")
+
 
 file(GLOB_RECURSE HEADERS "../Core/App/*.h")
 set(APP_INCLUDE_PATH "")
